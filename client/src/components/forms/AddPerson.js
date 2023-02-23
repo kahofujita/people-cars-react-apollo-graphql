@@ -3,20 +3,48 @@ import { Input } from "antd";
 import { Button } from "antd";
 import { Form } from "antd";
 import FormItem from "antd/es/form/FormItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { ADD_PERSON, GET_PEOPLE } from "../../queries";
 
 const AddPerson = () => {
   const [id] = useState(uuidv4());
-  //   const [addPerson] = useMutation()
+  const [addPerson] = useMutation(ADD_PERSON);
   const [form] = Form.useForm();
+  const [, forceUpdate] = useState();
+
+  useEffect(() => {
+    forceUpdate([]);
+  }, []);
+
+  const onFinish = (values) => {
+    const { firstName, lastName } = values;
+
+    addPerson({
+      variables: {
+        id,
+        firstName,
+        lastName,
+      },
+      update: (cache, { data: { addPerson } }) => {
+        const data = cache.readQuery({ query: GET_PEOPLE });
+        cache.writeQuery({
+          query: GET_PEOPLE,
+          data: {
+            ...data,
+            people: [...data.people, addPerson],
+          },
+        });
+      },
+    });
+  };
 
   return (
     <Form
       name="add-person-form"
       form={form}
       layout="inline"
-    //   onFinish={onFinish}
+      onFinish={onFinish}
       size="large"
       style={{ marginBottom: "40px" }}
     >
