@@ -115,6 +115,7 @@ const typeDefs = gql`
     people: [Person]
     car(id: String!): Car
     cars: [Car]
+    personWithCars(personId: String!): [Car]
   }
 
   type Mutation {
@@ -151,6 +152,9 @@ const resolvers = {
     car: (root, args) => {
       return find(cars, { id: args.id });
     },
+    personWithCars: (root, args) => {
+      return cars.filter(car => car.personId === args.personId)
+    }
   },
   Mutation: {
     addPerson: (root, args) => {

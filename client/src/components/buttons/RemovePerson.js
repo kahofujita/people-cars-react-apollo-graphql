@@ -18,21 +18,21 @@ const RemovePerson = ({ id }) => {
     },
   });
 
-  // const [removeCar] = useMutation(REMOVE_CAR, {
-  //   update(cache, { data: { removeCar } }) {
-  //     const { cars } = cache.readQuery({ query: GET_CARS });
-  //     cache.writeQuery({
-  //       query: GET_CARS,
-  //       data: {
-  //         cars: filter(cars, (c) => {
-  //           return c.personId !== removePerson.id;
-  //         }),
-  //       },
-  //     });
-  //   },
-  // });
+  const [removeCar] = useMutation(REMOVE_CAR, {
+    update: (cache, { data: { removeCar } }) => {
+      const { cars } = cache.readQuery({ query: GET_CARS });
+      cache.writeQuery({
+        query: GET_CARS,
+        data: {
+          cars: filter(cars, (c) => {
+            return c.personId !== id;
+          }),
+        },
+      });
+    },
+  });
 
-  const handleButtonClick = () => {
+  const handleDeleteButtonClick = () => {
     let result = window.confirm("Are you sure you want to delete this person?");
 
     if (result) {
@@ -41,11 +41,7 @@ const RemovePerson = ({ id }) => {
           id,
         },
       });
-      // removeCar({
-      //   variables: {
-      //     id,
-      //   },
-      // });
+      removeCar();
     }
   };
 
@@ -53,7 +49,7 @@ const RemovePerson = ({ id }) => {
     <DeleteOutlined
       key="delete"
       style={{ color: "red" }}
-      onClick={handleButtonClick}
+      onClick={handleDeleteButtonClick}
     />
   );
 };

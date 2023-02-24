@@ -1,9 +1,8 @@
 import { useQuery } from "@apollo/client";
 import { Button } from "antd";
 import { Card } from "antd";
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GET_CARS } from "../../queries";
+import { GET_PERSON_WITH_CARS } from "../../queries";
 
 const getStyles = () => ({
   title: {
@@ -18,10 +17,7 @@ const getStyles = () => ({
   },
 });
 
-const PersonWithCars = (props) => {
-  const [firstName, setFirstName] = useState(props.firstName);
-  const [lastName, setLastName] = useState(props.lastName);
-
+const PersonWithCars = () => {
   const styles = getStyles();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,27 +26,29 @@ const PersonWithCars = (props) => {
     navigate("/");
   };
 
-  const { loading, error, data } = useQuery(GET_CARS);
+  const { loading, error, data } = useQuery(GET_PERSON_WITH_CARS, {
+    variables: { personId: location.state.id },
+  });
 
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
-  console.log(location.state.id);
-
   return (
     <div>
-      <Card title={`${props.firstName} ${props.lastName}`} style={styles.title}>
-        {data.cars
-          .filter((car) => car.personId === location.state.id)
-          .map(({ id, year, make, model, price }) => (
-            <Card
-              type="inner"
-              title={`${year} ${make} ${model} -> $ ${new Intl.NumberFormat().format(
-                price
-              )}`}
-              style={styles.card}
-            />
-          ))}
+      <Card
+        title={`${data.person.firstName} ${data.person.lastName}`}
+        style={styles.title}
+      >
+        {data.personWithCars.map(({ id, year, make, model, price }) => (
+          <Card
+            key={id}
+            type="inner"
+            title={`${year} ${make} ${model} -> $ ${new Intl.NumberFormat().format(
+              price
+            )}`}
+            style={styles.card}
+          />
+        ))}
         <Button type="link" onClick={goBackButtonClick}>
           GO BACK HOME
         </Button>
