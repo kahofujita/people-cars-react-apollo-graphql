@@ -124,7 +124,7 @@ const UpdateCar = (props) => {
               form.getFieldsError().filter(({ errors }) => errors.length).length
             }
           >
-            Update Person
+            Update Car
           </Button>
         )}
       </Form.Item>

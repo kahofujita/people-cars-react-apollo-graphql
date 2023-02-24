@@ -6,7 +6,7 @@ import UpdateCar from "../forms/UpdateCar";
 
 const getStyles = () => ({
   card: {
-    width: "500px",
+    width: "85vw",
   },
 });
 
@@ -57,14 +57,14 @@ const CarCard = (props) => {
         />
       ) : (
         <Card
+          type="inner"
+          title={`${year} ${make} ${model} -> ${price}`}
           style={styles.card}
           actions={[
             <EditOutlined key="edit" onClick={handleButtonClick} />,
             <RemoveCar id={id} />,
           ]}
-        >
-          {year} {make} {model} -&gt; {price}
-        </Card>
+        ></Card>
       )}
     </div>
   );

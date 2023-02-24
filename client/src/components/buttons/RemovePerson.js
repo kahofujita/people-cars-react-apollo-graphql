@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { GET_PEOPLE, REMOVE_PERSON } from "../../queries";
 import filter from "lodash.filter";
 
-const RemovePerson = (id) => {
+const RemovePerson = ({ id }) => {
   const [removePerson] = useMutation(REMOVE_PERSON, {
     update(cache, { data: { removePerson } }) {
       const { people } = cache.readQuery({ query: GET_PEOPLE });
