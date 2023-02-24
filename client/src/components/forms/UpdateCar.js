@@ -8,6 +8,16 @@ import { Form } from "antd";
 import { useEffect, useState } from "react";
 import { GET_PEOPLE, UPDATE_CAR } from "../../queries";
 
+const getStyles = () => ({
+  form: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  button: {
+    marginTop: "20px",
+  },
+});
+
 const UpdateCar = (props) => {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState();
@@ -18,6 +28,8 @@ const UpdateCar = (props) => {
   const [price, setPrice] = useState(props.price);
   const [personId, setPersonId] = useState(props.personId);
   const [updateCar] = useMutation(UPDATE_CAR);
+
+  const styles = getStyles();
 
   useEffect(() => {
     forceUpdate();
@@ -79,6 +91,7 @@ const UpdateCar = (props) => {
       layout="inline"
       onFinish={onFinish}
       size="large"
+      style={styles.form}
       initialValues={{
         year: year,
         make: make,
@@ -149,6 +162,7 @@ const UpdateCar = (props) => {
           <Button
             type="primary"
             htmlType="submit"
+            style={styles.button}
             disabled={
               (!form.isFieldTouched("year") &&
                 !form.isFieldTouched("make") &&
@@ -162,7 +176,9 @@ const UpdateCar = (props) => {
           </Button>
         )}
       </Form.Item>
-      <Button onClick={props.onButtonClick}>Cancel</Button>
+      <Button style={styles.button} onClick={props.onButtonClick}>
+        Cancel
+      </Button>
     </Form>
   );
 };

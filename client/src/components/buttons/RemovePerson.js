@@ -19,13 +19,13 @@ const RemovePerson = ({ id }) => {
   });
 
   const [removeCar] = useMutation(REMOVE_CAR, {
-    update: (cache, { data: { removeCar } }) => {
+    update(cache, { data: { removeCar } }) {
       const { cars } = cache.readQuery({ query: GET_CARS });
       cache.writeQuery({
         query: GET_CARS,
         data: {
           cars: filter(cars, (c) => {
-            return c.personId !== id;
+            return c.personId !== removeCar.id;
           }),
         },
       });
@@ -35,13 +35,19 @@ const RemovePerson = ({ id }) => {
   const handleDeleteButtonClick = () => {
     let result = window.confirm("Are you sure you want to delete this person?");
 
+    console.log(id);
+
     if (result) {
       removePerson({
         variables: {
           id,
         },
       });
-      removeCar();
+      removeCar({
+        variables: {
+          id,
+        },
+      });
     }
   };
 

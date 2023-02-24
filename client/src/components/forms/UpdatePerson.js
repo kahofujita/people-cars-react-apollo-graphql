@@ -11,7 +11,6 @@ const UpdatePerson = (props) => {
   const [id] = useState(props.id);
   const [firstName, setFirstName] = useState(props.firstName);
   const [lastName, setLastName] = useState(props.lastName);
-
   const [updatePerson] = useMutation(UPDATE_PERSON);
 
   useEffect(() => {
