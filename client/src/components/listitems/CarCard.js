@@ -58,13 +58,15 @@ const CarCard = (props) => {
       ) : (
         <Card
           type="inner"
-          title={`${year} ${make} ${model} -> ${price}`}
+          title={`${year} ${make} ${model} -> $ ${new Intl.NumberFormat().format(
+            price
+          )}`}
           style={styles.card}
           actions={[
             <EditOutlined key="edit" onClick={handleButtonClick} />,
             <RemoveCar id={id} />,
           ]}
-        ></Card>
+        />
       )}
     </div>
   );

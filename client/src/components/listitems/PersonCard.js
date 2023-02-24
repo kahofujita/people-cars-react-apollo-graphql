@@ -29,11 +29,7 @@ const PersonCard = (props) => {
   };
 
   const handleLinkButtonClick = () => {
-    navigate(`/people/${id}`);
-  };
-
-  const goBackButtonClick = () => {
-    navigate("/");
+    navigate(`/people/${id}`, { state: { id: id } });
   };
 
   const updateStateVariable = (variable, value) => {
@@ -71,9 +67,6 @@ const PersonCard = (props) => {
           <CarList id={id} />
           <Button type="link" onClick={handleLinkButtonClick}>
             LEARN MORE
-          </Button>
-          <Button type="link" onClick={goBackButtonClick}>
-            GO BACK HOME
           </Button>
         </Card>
       )}

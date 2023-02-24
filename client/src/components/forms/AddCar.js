@@ -9,6 +9,22 @@ import { useMutation } from "@apollo/client";
 import { ADD_CAR, GET_CARS, GET_PEOPLE } from "../../queries";
 import { Select } from "antd";
 import { useQuery } from "@apollo/client";
+import { Divider } from "antd";
+
+const getStyles = () => ({
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: "30px",
+    paddingRight: "30px",
+    marginBottom: "10px",
+  },
+  form: {
+    marginBottom: "60px",
+    display: "flex",
+    justifyContent: "center",
+  },
+});
 
 const AddCar = () => {
   const [id] = useState(uuidv4());
@@ -16,6 +32,8 @@ const AddCar = () => {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState();
   const [, setValue] = useState("");
+
+  const styles = getStyles();
 
   useEffect(() => {
     forceUpdate([]);
@@ -61,74 +79,89 @@ const AddCar = () => {
     });
   };
 
-  return (
-    <Form
-      name="add-car-form"
-      form={form}
-      layout="inline"
-      onFinish={onFinish}
-      size="large"
-      style={{ marginBottom: "40px" }}
-    >
-      <FormItem
-        label="Year: "
-        name="year"
-        rules={[{ required: true, message: "Please input year!" }]}
+  return selectOptionArray.length ? (
+    <div>
+      <Divider plain style={styles.title}>
+        Add Car
+      </Divider>
+      <Form
+        name="add-car-form"
+        form={form}
+        layout="inline"
+        onFinish={onFinish}
+        size="large"
+        style={styles.form}
       >
-        <InputNumber placeholder="Year" />
-      </FormItem>
-      <FormItem
-        label="Make: "
-        name="make"
-        rules={[{ required: true, message: "Please input make!" }]}
-      >
-        <Input placeholder="Make" />
-      </FormItem>
-      <FormItem
-        label="Model: "
-        name="model"
-        rules={[{ required: true, message: "Please input model!" }]}
-      >
-        <Input placeholder="Model" />
-      </FormItem>
-      <FormItem
-        label="Price: "
-        name="price"
-        rules={[{ required: true, message: "Please input price!" }]}
-      >
-        <InputNumber prefix="$" placeholder="Price" />
-      </FormItem>
-      <FormItem
-        label="Person: "
-        name="personId"
-        rules={[{ required: true, message: "Please select person!" }]}
-      >
-        <Select
-          showSearch
-          placeholder="Select a person"
-          optionFilterProp="children"
-          onChange={onChange}
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-          options={selectOptionArray}
-        />
-      </FormItem>
-      <FormItem shouldUpdate={true}>
-        {() => (
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={
-              !form.isFieldsTouched(true) ||
-              form.getFieldsError().filter(({ errors }) => errors.length).length
+        <FormItem
+          label="Year: "
+          name="year"
+          rules={[{ required: true, message: "Please input year!" }]}
+        >
+          <InputNumber placeholder="Year" min={0} />
+        </FormItem>
+        <FormItem
+          label="Make: "
+          name="make"
+          rules={[{ required: true, message: "Please input make!" }]}
+        >
+          <Input placeholder="Make" />
+        </FormItem>
+        <FormItem
+          label="Model: "
+          name="model"
+          rules={[{ required: true, message: "Please input model!" }]}
+        >
+          <Input placeholder="Model" />
+        </FormItem>
+        <FormItem
+          label="Price: "
+          name="price"
+          rules={[{ required: true, message: "Please input price!" }]}
+        >
+          <InputNumber
+            prefix="$"
+            placeholder="Price"
+            min={0}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
-          >
-            Add Car
-          </Button>
-        )}
-      </FormItem>
-    </Form>
+          />
+        </FormItem>
+        <FormItem
+          label="Person: "
+          name="personId"
+          rules={[{ required: true, message: "Please select person!" }]}
+        >
+          <Select
+            showSearch
+            placeholder="Select a person"
+            optionFilterProp="children"
+            onChange={onChange}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            options={selectOptionArray}
+          />
+        </FormItem>
+        <FormItem shouldUpdate={true}>
+          {() => (
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={
+                !form.isFieldsTouched(true) ||
+                form.getFieldsError().filter(({ errors }) => errors.length)
+                  .length
+              }
+            >
+              Add Car
+            </Button>
+          )}
+        </FormItem>
+      </Form>
+    </div>
+  ) : (
+    <></>
   );
 };
 

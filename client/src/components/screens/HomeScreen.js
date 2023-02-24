@@ -5,7 +5,7 @@ import PeopleList from "../lists/PeopleList";
 
 const HomeScreen = () => {
   return (
-    <div className="Home">
+    <div className="Home" style={{ paddingLeft: "30px", paddingRight: "30px" }}>
       <Title />
       <AddPerson />
       <AddCar />
