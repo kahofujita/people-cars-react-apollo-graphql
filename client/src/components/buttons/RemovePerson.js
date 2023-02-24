@@ -2,8 +2,10 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { GET_CARS, GET_PEOPLE, REMOVE_CAR, REMOVE_PERSON } from "../../queries";
 import filter from "lodash.filter";
+import { useState } from "react";
 
-const RemovePerson = ({ id }) => {
+const RemovePerson = (props) => {
+  const [id] = useState(props.id);
   const [removePerson] = useMutation(REMOVE_PERSON, {
     update(cache, { data: { removePerson } }) {
       const { people } = cache.readQuery({ query: GET_PEOPLE });
@@ -34,8 +36,6 @@ const RemovePerson = ({ id }) => {
 
   const handleDeleteButtonClick = () => {
     let result = window.confirm("Are you sure you want to delete this person?");
-
-    console.log(id);
 
     if (result) {
       removePerson({
